@@ -18,13 +18,9 @@ function getUserChoice(round) {
     return choice;
 }
 
-
 const msg1 = "scissors beat paper";
 const msg2 = "paper beats rock";
 const msg3 = "rock beats scissors";
-
-let userScore = 0;
-let computerScore = 0;
 
 function playRound(round) {
     const userChoice = getUserChoice(round).toLowerCase();
@@ -74,18 +70,20 @@ function playRound(round) {
 
 }
 
-
-
-
 function playGame() {
+    let userScore = 0;
+    let computerScore = 0;
+    // play 5 rounds
     for (let i=0; i < 5; i++) {
         playRound(i+1);
     }
     // Compare user and computer score
     if (userScore > computerScore) {
         message = "You won the game!";
-    } else {
+    } else if (computerScore < userScore){
         message = "You lost the game :(";
+    } else {
+        message = "It's a tie!"
     }
 
     should_continue = prompt(`${message}\nYou: ${userScore} Computer: ${computerScore}\nDo you wanna play another one? y/n"`);
