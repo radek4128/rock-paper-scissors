@@ -113,20 +113,24 @@ function gameEnd() {
     const playAgainBtn =  document.createElement("button");
     playAgainBtn.textContent = "Play Again";
 
-    buttonContainer.appendChild(playAgainBtn)
+    buttonContainer.appendChild(playAgainBtn);
     playAgainBtn.addEventListener("click", startGame);
 };
 
 function startGame() {
     buttonContainer.textContent = "";
+
     const rockBtn = document.createElement("button");
-    rockBtn.textContent = "Rock";
-    rockBtn.setAttribute("id", "Rock");
     const paperBtn = document.createElement("button");
-    paperBtn.textContent = "Paper";
-    paperBtn.setAttribute("id", "Paper");
     const scissorsBtn = document.createElement("button");
+
+    rockBtn.textContent = "Rock";
+    paperBtn.textContent = "Paper";
     scissorsBtn.textContent = "Scissors";
+
+
+    rockBtn.setAttribute("id", "Rock");
+    paperBtn.setAttribute("id", "Paper");
     scissorsBtn.setAttribute("id", "Scissors");
 
     buttonContainer.appendChild(rockBtn);
@@ -151,8 +155,7 @@ function startGame() {
 
 }
 
-startGame()
-
+startGame();
 
 
 
