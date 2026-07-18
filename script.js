@@ -1,97 +1,164 @@
 function getComputerChoice() {
-    random_number = Math.random(0, 3);
-    if (random_number < 0.33) {
-        return 'rock';
-    } else if (random_number >=0.33 && random_number < 0.66) {
-        return 'paper';
+    randomNumber = Math.floor(Math.random() * 3);
+    if (randomNumber === 0) {
+        return 'Rock';
+    } else if (randomNumber === 1) {
+        return 'Paper';
     } else {
-        return'scissors';
+        return'Scissors';
     }
 }
 
-function getUserChoice(round) {
-    if (round == 1) {
-        choice = prompt("Round: 1\nPlease enter one of the following: Rock, Paper, Scissors", "");
-    } else {
-        choice = prompt(`Round: ${round}\nYou: ${userScore} Computer: ${computerScore}\nPlease enter one of the following: Rock, Paper, Scissors`, "");
-    }
-    return choice;
-}
+let userScore = 0;
+let cpuScore = 0;
+const score =  document.querySelector("#score span")
 
-const msg1 = "scissors beat paper";
-const msg2 = "paper beats rock";
-const msg3 = "rock beats scissors";
 
-function playRound(round) {
-    const userChoice = getUserChoice(round).toLowerCase();
+function playRound(choice) {
+    const userChoice = choice;
     const computerChoice = getComputerChoice();
-    console.log(`User choice: ${userChoice}`);
-    console.log(`Computer choice: ${computerChoice}`);
+
+
     if (userChoice === computerChoice) {
-        console.log(`Computer also choose ${computerChoice}!`);
+        displayMessage(userChoice, computerChoice, 
+            "It's a tie");
         return;
     }
     switch (userChoice) {
-        case 'scissors': {
-            if (computerChoice === 'paper') {
-                console.log(`You won, ${msg1}`);
-                userScore++;
+        case 'Scissors': {
+            if (computerChoice === 'Paper') {
+                userScore++
+                displayMessage(userChoice, computerChoice,
+                    `You won!`);
                 return;
             } else {
-                console.log(`You lost, ${msg3}`);
-                computerScore++;
+                cpuScore++
+                displayMessage(userChoice, computerChoice,
+                    `You lost`);
                 return;
             }
         }
-        case 'paper': {
-            if (computerChoice === 'rock') {
-                console.log(`You won, ${msg2}`);
+        case 'Paper': {
+            if (computerChoice === 'Rock') {
                 userScore++;
+                displayMessage(userChoice, computerChoice,
+                    `You won!`);
                 return;
             } else {
-                console.log(`You lost, ${msg1}`);
-                computerScore++;
+                cpuScore++;
+                displayMessage(userChoice, computerChoice,
+                    `You lost`);
                 return;
             }
         }
-        case 'rock': {
-            if (computerChoice === 'scissors') {
-                console.log(`You won, ${msg3}`);
+        case 'Rock': {
+            if (computerChoice === 'Scissors') {
                 userScore++;
+                displayMessage(userChoice, computerChoice, 
+                    `You won!`);
                 return;
             } else {
-                console.log(`You lost, ${msg2}`);
-                computerScore++;
+                cpuScore++;
+                displayMessage(userChoice, computerChoice,
+                    `You lost`);
                 return;
             }
         }
     }
-    console.log("Wrong choice, you have to type either paper, scissors or rock")
+
+};
+
+test = {
+    'Rock': 0,
+    'Paper': 0,
+    'Scissors': 0
+};
+
+const mainWindow = document.querySelector(".info");
+const msgLine1 = document.createElement("p");
+const msgLine2 = document.createElement("p");
+const msgLine3 = document.createElement("p");
+msgLine3.classList.add("result");
+mainWindow.appendChild(msgLine1);
+mainWindow.appendChild(msgLine2);
+mainWindow.appendChild(msgLine3);
+
+
+
+
+function displayMessage(userChoice, computerChoice, msg) {
+    i = 0;
+    score.textContent = (`${userScore}/${cpuScore}`);
+    msgLine1.textContent = `You: ${userChoice}`;
+    msgLine2.textContent = `Cpu: ${computerChoice}`;
+    msgLine3.textContent = msg;
+
+
+    if (userScore >= 5 || cpuScore >= 5) {
+        if (userScore > cpuScore) {
+            gameEnd();
+        } else {
+            gameEnd();
+        };
+    }
+};
+
+const buttonContainer = document.querySelector(".button-container");
+
+function gameEnd() {
+    /// replace buttons with play again button for game reset ///
+    const originalHtml = buttonContainer.innerHTML;
+    buttonContainer.textContent = "";
+
+    const playAgainBtn =  document.createElement("button");
+    playAgainBtn.textContent = "Play Again";
+
+    buttonContainer.appendChild(playAgainBtn)
+    playAgainBtn.addEventListener("click", startGame);
+};
+
+function startGame() {
+    buttonContainer.textContent = "";
+    const rockBtn = document.createElement("button");
+    rockBtn.textContent = "Rock";
+    rockBtn.setAttribute("id", "Rock");
+    const paperBtn = document.createElement("button");
+    paperBtn.textContent = "Paper";
+    paperBtn.setAttribute("id", "Paper");
+    const scissorsBtn = document.createElement("button");
+    scissorsBtn.textContent = "Scissors";
+    scissorsBtn.setAttribute("id", "Scissors");
+
+    buttonContainer.appendChild(rockBtn);
+    buttonContainer.appendChild(paperBtn);
+    buttonContainer.appendChild(scissorsBtn);
+
+    const buttons = document.querySelectorAll('button');
+
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            round = playRound(button.id);
+        });
+    });
+
+    userScore = 0;
+    cpuScore = 0;
+    score.textContent = `${userScore}/${cpuScore}`;
+    msgLine1.textContent = "";
+    msgLine2.textContent = "";
+    msgLine3.textContent = "";
+
 
 }
 
-function playGame() {
-    let userScore = 0;
-    let computerScore = 0;
-    // play 5 rounds
-    for (let i=0; i < 5; i++) {
-        playRound(i+1);
-    }
-    // Compare user and computer score
-    if (userScore > computerScore) {
-        message = "You won the game!";
-    } else if (computerScore < userScore){
-        message = "You lost the game :(";
-    } else {
-        message = "It's a tie!"
-    }
+startGame()
 
-    should_continue = prompt(`${message}\nYou: ${userScore} Computer: ${computerScore}\nDo you wanna play another one? y/n"`);
-    if (should_continue === 'y') {
-        userScore = 0;
-        computerScore = 0;
-        playGame()
-    }
-}
 
-playGame();
+
+
+
+
+
+
+
+
